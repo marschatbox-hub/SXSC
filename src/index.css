@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Light Mode (Clean Utility / SaaS) */
+  --color-royal: #ffffff; /* Cards */
+  --color-charcoal: #f4f5f7; /* Main background */
+  --color-neon: #10b981; /* Emerald 500 - Softer green */
+  --color-cyan: #0ea5e9; /* Sky 500 - Professional blue */
+  --color-glass: rgba(255, 255, 255, 0.85);
+  --color-glass-border: rgba(0, 0, 0, 0.06);
+  
+  /* Text colors */
+  --color-white: #0f172a; /* Slate 900 for main text */
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+
+  /* Accent colors */
+  --color-royal-accent: #0f172a;
+  --color-gold: #d97706; /* Amber 600 */
+
+  /* Shadows & Glows */
+  --shadow-neon: 0 4px 14px 0 rgba(16, 185, 129, 0.25);
+  --shadow-cyan: 0 4px 14px 0 rgba(14, 165, 233, 0.25);
+  --shadow-up: 0 -4px 20px rgba(0, 0, 0, 0.05);
+  --text-glow-neon: none;
+  --text-glow-cyan: none;
+}
+
+.dark {
+  /* Dark Mode (Atmospheric / Technical) */
+  --color-royal: #131b2f; /* Deep navy cards */
+  --color-charcoal: #0a0f1c; /* Very deep slate background */
+  --color-neon: #34d399; /* Emerald 400 */
+  --color-cyan: #22d3ee; /* Cyan 400 */
+  --color-glass: rgba(19, 27, 47, 0.75);
+  --color-glass-border: rgba(255, 255, 255, 0.08);
+  
+  /* Text colors */
+  --color-white: #f8fafc;
+  --color-gray-100: #1e293b;
+  --color-gray-200: #334155;
+  --color-gray-300: #475569;
+  --color-gray-400: #64748b;
+  --color-gray-500: #94a3b8;
+  --color-gray-600: #cbd5e1;
+  --color-gray-800: #f1f5f9;
+  --color-gray-900: #f8fafc;
+
+  --color-royal-accent: #f8fafc;
+  --color-gold: #fbbf24; /* Amber 400 */
+
+  /* Shadows & Glows */
+  --shadow-neon: 0 0 15px rgba(52, 211, 153, 0.25);
+  --shadow-cyan: 0 0 15px rgba(34, 211, 238, 0.25);
+  --shadow-up: 0 -4px 20px rgba(0, 0, 0, 0.5);
+  --text-glow-neon: 0 0 10px rgba(52, 211, 153, 0.4);
+  --text-glow-cyan: 0 0 10px rgba(34, 211, 238, 0.4);
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-royal: var(--color-royal);
+  --color-charcoal: var(--color-charcoal);
+  --color-neon: var(--color-neon);
+  --color-cyan: var(--color-cyan);
+  --color-glass: var(--color-glass);
+  --color-glass-border: var(--color-glass-border);
+  
+  --color-white: var(--color-white);
+  --color-gray-100: var(--color-gray-100);
+  --color-gray-200: var(--color-gray-200);
+  --color-gray-300: var(--color-gray-300);
+  --color-gray-400: var(--color-gray-400);
+  --color-gray-500: var(--color-gray-500);
+  --color-gray-600: var(--color-gray-600);
+  --color-gray-800: var(--color-gray-800);
+  --color-gray-900: var(--color-gray-900);
+  --color-black: var(--color-gray-900);
+
+  --color-royal-accent: var(--color-royal-accent);
+  --color-gold: var(--color-gold);
+
+  --shadow-neon: var(--shadow-neon);
+  --shadow-cyan: var(--shadow-cyan);
+  --shadow-up: var(--shadow-up);
+}
+
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+@utility glass-panel {
+  background-color: var(--color-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-glass-border);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.03);
+}
+
+.dark .glass-panel {
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+@utility neon-glow {
+  box-shadow: var(--shadow-neon);
+}
+
+@utility cyan-glow {
+  box-shadow: var(--shadow-cyan);
+}
+
+@utility text-glow-neon {
+  text-shadow: var(--text-glow-neon);
+}
+
+@utility text-glow-cyan {
+  text-shadow: var(--text-glow-cyan);
+}
+
+@utility metallic-sheen {
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.05) 100%);
+}
+
+body {
+  background-color: var(--color-charcoal);
+  color: var(--color-white);
+  /* Light mode background texture: Subtle dot grid */
+  background-image: radial-gradient(var(--color-gray-300) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.dark body {
+  /* Dark mode background texture: Atmospheric radial gradients + subtle grid */
+  background-image: 
+    radial-gradient(circle at 15% 0%, rgba(34, 211, 238, 0.04), transparent 40%),
+    radial-gradient(circle at 85% 100%, rgba(52, 211, 153, 0.04), transparent 40%),
+    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px;
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-royal-accent);
+}
+
+header {
+  border-bottom: 1px solid var(--color-glass-border);
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
