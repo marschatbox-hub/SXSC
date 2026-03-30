@@ -58,12 +58,12 @@ export default function FlashSale() {
             <div className="w-28 h-28 rounded-xl overflow-hidden flex-none relative">
               <img src={product.image} alt={product.name} className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
               </div>
-            <div className="flex-1 flex flex-col justify-between py-1">
+            <div className="flex-1 flex flex-col justify-between py-1 min-w-0">
               <h3 className="text-sm font-bold text-gray-900 truncate">
                 {product.name}
               </h3>
               
-              <div>
+              <div className="mt-2">
                 <div className="w-full bg-charcoal rounded-full h-1.5 mb-1 overflow-hidden border border-glass-border">
                   <div className="bg-cyan h-full rounded-full shadow-cyan" style={{ width: '75%' }} />
                 </div>
@@ -73,13 +73,13 @@ export default function FlashSale() {
                 </div>
               </div>
 
-              <div className="flex items-end justify-between mt-2">
-                <div className="flex items-baseline gap-1">
+              <div className="flex items-end justify-between mt-2 gap-2">
+                <div className="flex items-baseline gap-1 min-w-0 truncate">
                   <span className="text-xs text-neon font-bold">SCNY</span>
-                  <span className="text-xl text-neon font-bold leading-none">{Math.floor(product.scny * 0.7)}</span>
-                  <span className="text-xs text-gray-800 line-through ml-1 font-mono">¥{product.price}</span>
+                  <span className="text-lg text-neon font-bold leading-none truncate">{Math.floor(product.scny * 0.7)}</span>
+                  <span className="text-[10px] text-gray-800 line-through ml-1 font-mono truncate">¥{product.price}</span>
                 </div>
-                <button className="bg-cyan text-charcoal px-4 py-1.5 rounded-full text-xs font-bold shadow-cyan active:scale-95 transition-transform hover:bg-cyan/90 whitespace-nowrap">
+                <button className="bg-cyan text-charcoal px-3 py-1.5 rounded-full text-xs font-bold shadow-cyan active:scale-95 transition-transform hover:bg-cyan/90 whitespace-nowrap flex-shrink-0">
                   马上抢
                 </button>
               </div>

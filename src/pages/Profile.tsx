@@ -20,7 +20,7 @@ import { useAsset } from "@/contexts/AssetContext";
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { isMerchant, orders, scnyBalance, pointsBalance, sPower } = useAsset();
+  const { isMerchant, orders, scnyBalance, pointsBalance, cValue } = useAsset();
 
   const pendingCount = orders.filter(o => o.status === "待付款").length;
   const shippingCount = orders.filter(o => o.status === "待发货").length;
@@ -80,8 +80,8 @@ export default function Profile() {
               <p className="text-xs text-gray-800 mt-1">购物积分</p>
             </div>
             <div className="flex-1 text-center cursor-pointer hover:bg-white/5 rounded-lg py-2 transition-colors" onClick={() => navigate('/asset/hashrate/history')}>
-              <p className="text-xl font-bold text-gray-900 font-mono">{sPower.toLocaleString()}</p>
-              <p className="text-xs text-gray-800 mt-1">sPower</p>
+              <p className="text-xl font-bold text-gray-900 font-mono">{cValue.toLocaleString()}</p>
+              <p className="text-xs text-gray-800 mt-1">cValue</p>
             </div>
           </div>
         </div>

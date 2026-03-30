@@ -34,7 +34,7 @@ export default function Vouchers() {
       
       // Update assets
       updateBalance('scny', -totalVoucherPrice);
-      updateBalance('sPower', Math.floor(totalVoucherPrice * 1.5));
+      updateBalance('cValue', Math.floor(totalVoucherPrice * 1.5));
       if (selectedVoucherType === '100percent') {
         updateBalance('points', totalVoucherPrice);
       }
@@ -46,7 +46,7 @@ export default function Vouchers() {
         count: voucherCount,
         status: 'active',
         currentDay: 1,
-        totalDays: selectedVoucherType === 'linear' ? 150 : 100,
+        totalDays: selectedVoucherType === 'linear' ? 100 : 150,
         totalHashrate: Math.floor(totalVoucherPrice * 1.5),
         releasedHashrate: 0
       });
@@ -86,22 +86,22 @@ export default function Vouchers() {
         <div className="glass-panel rounded-3xl p-5">
           <div className="flex items-center gap-2 mb-4">
             <Ticket size={24} className="text-neon" />
-            <h2 className="text-lg font-bold text-gray-900 tracking-wide">SXT 算力池入口</h2>
+            <h2 className="text-lg font-bold text-gray-900 tracking-wide">SXT 贡献值池入口</h2>
           </div>
           <p className="text-sm text-gray-600 mb-6">
-            购买购物券可获得购物积分，并同步获得 <strong className="text-cyan">1.5倍 sPower 算力</strong>，进入算力池每日释放 xSCNY。
+            购买购物券可获得购物积分，并同步获得 <strong className="text-cyan">1.5倍 cValue 贡献值</strong>，进入贡献值池每日释放 xSCNY。
           </p>
 
           <div className="space-y-4">
             {/* Linear Voucher */}
             <div className="border border-glass-border bg-royal/30 rounded-2xl p-4 relative overflow-hidden hover:border-cyan/30 transition-colors">
-              <div className="absolute top-0 right-0 bg-royal border-b border-l border-glass-border text-gray-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl">150天释放</div>
+              <div className="absolute top-0 right-0 bg-royal border-b border-l border-glass-border text-gray-600 text-[10px] font-bold px-3 py-1 rounded-bl-xl">贡献值 100天释放</div>
               <h3 className="font-bold text-gray-900 mb-1">线性购物券</h3>
               <p className="text-2xl font-bold font-mono text-neon mb-3">{voucherRole === 'user' ? '2,000' : '50,000'} <span className="text-sm text-gray-600 font-sans">SCNY / 份</span></p>
               <ul className="text-xs text-gray-600 space-y-2 mb-4">
                 <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-neon mt-1.5 shadow-neon" /> 每日释放 1%~5% 购物积分</li>
-                <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-cyan mt-1.5 shadow-cyan" /> 获得 1.5倍 sPower ({voucherRole === 'user' ? '3,000' : '75,000'})</li>
-                <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-cyan mt-1.5 shadow-cyan" /> 算力分 150天 释放为 veMint</li>
+                <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-cyan mt-1.5 shadow-cyan" /> 获得 1.5倍 cValue ({voucherRole === 'user' ? '3,000' : '75,000'})</li>
+                <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-cyan mt-1.5 shadow-cyan" /> 贡献值分 100天 释放为 veMint</li>
               </ul>
               <button 
                 onClick={() => { setSelectedVoucherType('linear'); setActiveModal('buy_voucher'); }}
@@ -113,13 +113,13 @@ export default function Vouchers() {
 
             {/* 100% Voucher */}
             <div className="border border-cyan/50 bg-cyan/5 rounded-2xl p-4 relative overflow-hidden shadow-cyan">
-              <div className="absolute top-0 right-0 bg-cyan/20 border-b border-l border-cyan/30 text-cyan text-[10px] font-bold px-3 py-1 rounded-bl-xl">100天释放</div>
+              <div className="absolute top-0 right-0 bg-cyan/20 border-b border-l border-cyan/30 text-cyan text-[10px] font-bold px-3 py-1 rounded-bl-xl">贡献值 150天释放</div>
               <h3 className="font-bold text-gray-900 mb-1">100% 购物券</h3>
               <p className="text-2xl font-bold font-mono text-neon mb-3">{voucherRole === 'user' ? '2,000' : '50,000'} <span className="text-sm text-gray-600 font-sans">SCNY / 份</span></p>
               <ul className="text-xs text-gray-600 space-y-2 mb-4">
                 <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-neon mt-1.5 shadow-neon" /> 一次性获得 100% 购物积分</li>
-                <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-cyan mt-1.5 shadow-cyan" /> 获得 1.5倍 sPower ({voucherRole === 'user' ? '3,000' : '75,000'})</li>
-                <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-cyan mt-1.5 shadow-cyan" /> 算力分 100天 释放为 veMint</li>
+                <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-cyan mt-1.5 shadow-cyan" /> 获得 1.5倍 cValue ({voucherRole === 'user' ? '3,000' : '75,000'})</li>
+                <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-cyan mt-1.5 shadow-cyan" /> 贡献值分 150天 释放为 veMint</li>
               </ul>
               <button 
                 onClick={() => { setSelectedVoucherType('100percent'); setActiveModal('buy_voucher'); }}
@@ -156,22 +156,14 @@ export default function Vouchers() {
                   <div className="flex justify-between text-xs mb-1">
                     <span className="text-gray-600">购物积分释放进度</span>
                     <span className="font-medium text-gray-900 font-mono">
-                      {order.type === '100percent' ? '已一次性释放 100%' : `第 ${order.currentDay} 天 / ${order.totalDays} 天`}
+                      {order.type === '100percent' ? '已一次性释放 100%' : '每日释放 1%~5%'}
                     </span>
                   </div>
-                  {order.type === 'linear' && (
-                    <div className="w-full bg-charcoal rounded-full h-1.5 mt-2 overflow-hidden border border-glass-border">
-                      <div 
-                        className="bg-cyan h-1.5 rounded-full shadow-cyan" 
-                        style={{ width: `${(order.currentDay / order.totalDays) * 100}%` }}
-                      ></div>
-                    </div>
-                  )}
                 </div>
 
                 <div className="bg-royal/50 p-3 rounded-xl border border-glass-border mb-3">
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="text-gray-600">算力释放进度 (veMint)</span>
+                    <span className="text-gray-600">贡献值释放进度 (veMint)</span>
                     <span className="font-medium text-gray-900 font-mono">
                       {order.releasedHashrate.toLocaleString()} / {order.totalHashrate.toLocaleString()}
                     </span>
@@ -188,7 +180,7 @@ export default function Vouchers() {
             
             {hashrateOrders.length === 0 && (
               <div className="text-center py-8 text-gray-600 text-sm glass-panel rounded-2xl">
-                暂无购物券，快去购买获取购物积分和算力吧
+                暂无购物券，快去购买获取购物积分和贡献值吧
               </div>
             )}
           </div>
@@ -256,12 +248,12 @@ export default function Vouchers() {
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">获赠算力 (sPower)</span>
+                      <span className="text-gray-600">获赠贡献值 (cValue)</span>
                       <span className="font-bold text-neon font-mono">+{Math.floor(totalVoucherPrice * 1.5).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">算力释放周期</span>
-                      <span className="font-bold text-gray-900">{selectedVoucherType === 'linear' ? '150天' : '100天'}</span>
+                      <span className="text-gray-600">贡献值释放周期</span>
+                      <span className="font-bold text-gray-900">{selectedVoucherType === 'linear' ? '100天' : '150天'}</span>
                     </div>
                   </div>
 
@@ -285,7 +277,7 @@ export default function Vouchers() {
                     <Ticket size={32} />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2 tracking-wide">购买成功</h3>
-                  <p className="text-gray-600 text-sm mb-6">您已成功购买 {voucherCount} 份{selectedVoucherType === 'linear' ? '线性' : '100%'}购物券，算力已发放至您的账户。</p>
+                  <p className="text-gray-600 text-sm mb-6">您已成功购买 {voucherCount} 份{selectedVoucherType === 'linear' ? '线性' : '100%'}购物券，贡献值已发放至您的账户。</p>
                   <div className="flex gap-3">
                     <button 
                       onClick={() => setActiveModal(null)}

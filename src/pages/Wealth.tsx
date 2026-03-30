@@ -11,7 +11,7 @@ import { useAsset } from "@/contexts/AssetContext";
 
 export default function Wealth() {
   const navigate = useNavigate();
-  const { scnyBalance, pointsBalance, sxtBalance, xscnyBalance, sPower, veMint, hashrateOrders, updateBalance } = useAsset();
+  const { scnyBalance, pointsBalance, sxtBalance, xscnyBalance, cValue, veMint, hashrateOrders, updateBalance } = useAsset();
   const [activeTab, setActiveTab] = useState<'assets' | 'hashrate' | 'nodes'>('assets');
   const [activeModal, setActiveModal] = useState<'upgrade' | 'transfer' | 'withdraw' | 'deposit' | 'mint_sxt' | 'hashrate_upgrade_help' | null>(null);
   const [transferAsset, setTransferAsset] = useState<'SCNY' | 'SXT'>('SCNY');
@@ -81,7 +81,7 @@ export default function Wealth() {
 
   const TABS = [
     { id: 'assets', label: '资产账户' },
-    { id: 'hashrate', label: '算力池' },
+    { id: 'hashrate', label: '贡献值池' },
     { id: 'nodes', label: '节点团队' }
   ];
 
@@ -245,11 +245,11 @@ export default function Wealth() {
                 <div className="relative z-10">
                   <div className="flex justify-between items-start mb-6">
                     <div>
-                      <p className="text-neon/70 text-sm mb-1 font-mono">总算力 (sPower)</p>
-                      <h2 className="text-4xl font-bold font-mono text-neon text-glow-neon">{sPower.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</h2>
+                      <p className="text-neon/70 text-sm mb-1 font-mono">总贡献值 (cValue)</p>
+                      <h2 className="text-4xl font-bold font-mono text-neon text-glow-neon">{cValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</h2>
                     </div>
                     <button onClick={() => navigate('/asset/hashrate/history')} className="bg-white/10 hover:bg-white/20 transition-colors px-3 py-1.5 rounded-full text-xs backdrop-blur-sm flex items-center gap-1 border border-white/10">
-                      <History size={12} /> 算力明细
+                      <History size={12} /> 贡献值明细
                     </button>
                   </div>
 
@@ -276,7 +276,7 @@ export default function Wealth() {
               </div>
 
               <div>
-                <h3 className="text-sm font-bold text-gray-900 mb-3 px-1 tracking-wide">算力订单</h3>
+                <h3 className="text-sm font-bold text-gray-900 mb-3 px-1 tracking-wide">贡献值订单</h3>
                 <div className="space-y-3">
                   {hashrateOrders.map(order => (
                     <div key={order.id} className="glass-panel p-4 rounded-2xl">
@@ -298,7 +298,7 @@ export default function Wealth() {
                       
                       <div className="bg-royal/50 p-3 rounded-xl border border-glass-border mb-3">
                         <div className="flex justify-between text-xs mb-1">
-                          <span className="text-gray-800">算力释放进度 (veMint)</span>
+                          <span className="text-gray-800">贡献值释放进度 (veMint)</span>
                           <span className="font-medium text-gray-900 font-mono">
                             {order.releasedHashrate.toLocaleString()} / {order.totalHashrate.toLocaleString()}
                           </span>
@@ -322,7 +322,7 @@ export default function Wealth() {
                   
                   {hashrateOrders.length === 0 && (
                     <div className="text-center py-8 text-gray-800 text-sm glass-panel rounded-2xl">
-                      暂无算力订单，去购买购物券获取算力吧
+                      暂无贡献值订单，去购买购物券获取贡献值吧
                     </div>
                   )}
                 </div>
@@ -344,7 +344,7 @@ export default function Wealth() {
                 <div className="flex justify-between items-center mb-4 pb-4 border-b border-glass-border">
                   <div className="flex items-center gap-2">
                     <Award size={20} className="text-cyan" />
-                    <span className="font-bold text-gray-900 tracking-wide">算力节点</span>
+                    <span className="font-bold text-gray-900 tracking-wide">贡献值节点</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button onClick={() => setActiveModal('hashrate_upgrade_help')} className="text-gray-800 hover:text-cyan transition-colors">
@@ -436,7 +436,7 @@ export default function Wealth() {
                   {activeModal === 'withdraw' && 'SCNY 提现'}
                   {activeModal === 'deposit' && 'SCNY 充值'}
                   {activeModal === 'mint_sxt' && '铸造 SXT'}
-                  {activeModal === 'hashrate_upgrade_help' && '算力节点升级条件'}
+                  {activeModal === 'hashrate_upgrade_help' && '贡献值节点升级条件'}
                 </h2>
                 <button onClick={() => setActiveModal(null)} className="p-2 bg-royal rounded-full text-gray-800 hover:text-cyan hover:bg-royal/80 transition-colors border border-glass-border">
                   <X size={20} />

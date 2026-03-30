@@ -154,15 +154,15 @@ export default function Home() {
                     </span>
                   ))}
                 </div>
-                <div className="flex items-end justify-between">
-                  <div className="flex flex-col">
-                    <div className="flex items-baseline text-neon">
+                <div className="flex items-end justify-between gap-1">
+                  <div className="flex flex-col min-w-0">
+                    <div className="flex items-baseline text-neon truncate">
                       <span className="text-xs">SCNY </span>
-                      <span className="text-lg font-bold">{product.scny}</span>
+                      <span className="text-lg font-bold truncate ml-1">{product.scny}</span>
                     </div>
-                    <span className="text-[10px] text-gray-800 font-mono">≈ ¥{product.price}</span>
+                    <span className="text-[10px] text-gray-800 font-mono truncate">≈ ¥{product.price}</span>
                   </div>
-                  <span className="text-[10px] text-gray-800 mb-1 font-mono">{product.sales} 交易</span>
+                  <span className="text-[10px] text-gray-800 mb-1 font-mono flex-shrink-0">{product.sales} 交易</span>
                 </div>
               </div>
             </motion.div>

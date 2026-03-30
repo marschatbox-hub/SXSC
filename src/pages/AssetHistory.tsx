@@ -11,7 +11,7 @@ export default function AssetHistory() {
     points: "购物积分明细",
     sxt: "SXT 流水",
     xscny: "xSCNY 流水",
-    hashrate: "算力明细"
+    hashrate: "贡献值明细"
   };
 
   const title = type ? titles[type] || "资产流水" : "资产流水";
@@ -48,9 +48,9 @@ export default function AssetHistory() {
         ];
       case 'hashrate':
         return [
-          { id: 1, title: "购买购物券新增算力", date: "2026-03-20 14:30", amount: +7500, type: "income" },
-          { id: 2, title: "算力释放", date: "2026-03-19 08:00", amount: -125.5, type: "expense" },
-          { id: 3, title: "算力释放", date: "2026-03-18 08:00", amount: -125.5, type: "expense" },
+          { id: 1, title: "购买购物券新增贡献值", date: "2026-03-20 14:30", amount: +7500, type: "income" },
+          { id: 2, title: "贡献值释放", date: "2026-03-19 08:00", amount: -125.5, type: "expense" },
+          { id: 3, title: "贡献值释放", date: "2026-03-18 08:00", amount: -125.5, type: "expense" },
         ];
       default:
         return [];

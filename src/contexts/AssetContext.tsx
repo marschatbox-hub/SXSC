@@ -34,13 +34,13 @@ interface AssetContextType {
   pointsBalance: number;
   sxtBalance: number;
   xscnyBalance: number;
-  sPower: number;
+  cValue: number;
   veMint: number;
   hashrateOrders: HashrateOrder[];
   isMerchant: boolean;
   orders: Order[];
   setIsMerchant: (status: boolean) => void;
-  updateBalance: (asset: 'scny' | 'points' | 'sxt' | 'xscny' | 'sPower' | 'veMint', amount: number) => void;
+  updateBalance: (asset: 'scny' | 'points' | 'sxt' | 'xscny' | 'cValue' | 'veMint', amount: number) => void;
   addHashrateOrder: (order: Omit<HashrateOrder, 'id'>) => void;
   updateOrderStatus: (orderId: string, newStatus: string) => void;
   addOrder: (order: Omit<Order, 'id'>) => void;
@@ -53,7 +53,7 @@ export function AssetProvider({ children }: { children: ReactNode }) {
   const [pointsBalance, setPointsBalance] = useState(3200);
   const [sxtBalance, setSxtBalance] = useState(150);
   const [xscnyBalance, setXscnyBalance] = useState(16);
-  const [sPower, setSPower] = useState(3000);
+  const [cValue, setCValue] = useState(3000);
   const [veMint, setVeMint] = useState(32);
   const [isMerchant, setIsMerchant] = useState(false);
   const [orders, setOrders] = useState<Order[]>([
@@ -98,19 +98,19 @@ export function AssetProvider({ children }: { children: ReactNode }) {
       count: 1,
       status: 'active',
       currentDay: 20,
-      totalDays: 100,
+      totalDays: 150,
       totalHashrate: 3000,
       releasedHashrate: 600
     }
   ]);
 
-  const updateBalance = (asset: 'scny' | 'points' | 'sxt' | 'xscny' | 'sPower' | 'veMint', amount: number) => {
+  const updateBalance = (asset: 'scny' | 'points' | 'sxt' | 'xscny' | 'cValue' | 'veMint', amount: number) => {
     switch (asset) {
       case 'scny': setScnyBalance(prev => prev + amount); break;
       case 'points': setPointsBalance(prev => prev + amount); break;
       case 'sxt': setSxtBalance(prev => prev + amount); break;
       case 'xscny': setXscnyBalance(prev => prev + amount); break;
-      case 'sPower': setSPower(prev => prev + amount); break;
+      case 'cValue': setCValue(prev => prev + amount); break;
       case 'veMint': setVeMint(prev => prev + amount); break;
     }
   };
@@ -131,7 +131,7 @@ export function AssetProvider({ children }: { children: ReactNode }) {
 
   return (
     <AssetContext.Provider value={{
-      scnyBalance, pointsBalance, sxtBalance, xscnyBalance, sPower, veMint, hashrateOrders, isMerchant, orders,
+      scnyBalance, pointsBalance, sxtBalance, xscnyBalance, cValue, veMint, hashrateOrders, isMerchant, orders,
       setIsMerchant, updateBalance, addHashrateOrder, updateOrderStatus, addOrder
     }}>
       {children}
