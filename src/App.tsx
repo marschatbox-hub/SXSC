@@ -3,6 +3,7 @@ import { WalletProvider, useWallet } from "./contexts/WalletContext";
 import { AssetProvider } from "./contexts/AssetContext";
 import { CartProvider } from "./contexts/CartContext";
 import { UserActivityProvider } from "./contexts/UserActivityContext";
+import { UserProvider } from "./contexts/UserContext";
 import ConnectWallet from "./pages/ConnectWallet";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
@@ -73,9 +74,11 @@ export default function App() {
       <AssetProvider>
         <CartProvider>
           <UserActivityProvider>
-            <BrowserRouter>
-              <AppRoutes />
-            </BrowserRouter>
+            <UserProvider>
+              <BrowserRouter>
+                <AppRoutes />
+              </BrowserRouter>
+            </UserProvider>
           </UserActivityProvider>
         </CartProvider>
       </AssetProvider>

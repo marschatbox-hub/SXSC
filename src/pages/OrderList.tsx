@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, Search, Package, Truck, CheckCircle } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { usePaymentVerification } from "@/hooks/usePaymentVerification";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAsset } from "@/contexts/AssetContext";
@@ -11,6 +12,8 @@ export default function OrderList() {
   const { orders, updateOrderStatus } = useAsset();
   const [activeTab, setActiveTab] = useState(location.state?.tab || "all");
   const [toast, setToast] = useState<string | null>(null);
+  
+  const { verifyPayment, PaymentModal } = usePaymentVerification();
 
   useEffect(() => {
     if (location.state?.tab) {
@@ -33,8 +36,13 @@ export default function OrderList() {
 
   const handleAction = (orderId: string, action: string, productId?: number) => {
     if (action === "pay") {
-      updateOrderStatus(orderId, "待发货");
-      showToast("支付成功");
+      const order = orders.find(o => o.id === orderId);
+      if (order) {
+        verifyPayment(order.paidScny, () => {
+          updateOrderStatus(orderId, "待发货");
+          showToast("支付成功");
+        });
+      }
     } else if (action === "remind") {
       showToast("已提醒商家发货");
       // Simulate shipment after a delay for demo purposes
@@ -170,6 +178,7 @@ export default function OrderList() {
           </motion.div>
         )}
       </AnimatePresence>
+      <PaymentModal />
     </div>
   );
 }

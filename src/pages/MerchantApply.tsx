@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, Store, Upload, CheckCircle2, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { usePaymentVerification } from "@/hooks/usePaymentVerification";
 import { cn } from "@/lib/utils";
 import { useAsset } from "@/contexts/AssetContext";
 
@@ -11,6 +12,8 @@ export default function MerchantApply() {
   const { scnyBalance, updateBalance, isMerchant, setIsMerchant } = useAsset();
   const [step, setStep] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
+  
+  const { verifyPayment, PaymentModal } = usePaymentVerification();
 
   useEffect(() => {
     if (isMerchant && step === 1) {
@@ -22,13 +25,16 @@ export default function MerchantApply() {
 
   const handleApply = async () => {
     if (scnyBalance < 10000) return;
-    setIsProcessing(true);
-    // Simulate smart contract payment
-    setTimeout(() => {
-      updateBalance('scny', -10000);
-      setIsProcessing(false);
-      setStep(2);
-    }, 1500);
+    
+    verifyPayment(10000, () => {
+      setIsProcessing(true);
+      // Simulate smart contract payment
+      setTimeout(() => {
+        updateBalance('scny', -10000);
+        setIsProcessing(false);
+        setStep(2);
+      }, 1500);
+    });
   };
 
   const handleFinishReview = () => {
@@ -120,6 +126,7 @@ export default function MerchantApply() {
           </motion.div>
         )}
       </div>
+      <PaymentModal />
     </div>
   );
 }

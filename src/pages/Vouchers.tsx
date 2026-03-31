@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, Ticket, X } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { usePaymentVerification } from "@/hooks/usePaymentVerification";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
 import { useAsset } from "@/contexts/AssetContext";
@@ -15,6 +16,8 @@ export default function Vouchers() {
   const [voucherCount, setVoucherCount] = useState(1);
   const [activeModal, setActiveModal] = useState<'buy_voucher' | 'success' | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  
+  const { verifyPayment, PaymentModal } = usePaymentVerification();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -28,32 +31,34 @@ export default function Vouchers() {
   const totalVoucherPrice = voucherBasePrice * voucherCount;
 
   const handleActionSubmit = () => {
-    setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      
-      // Update assets
-      updateBalance('scny', -totalVoucherPrice);
-      updateBalance('cValue', Math.floor(totalVoucherPrice * 1.5));
-      if (selectedVoucherType === '100percent') {
-        updateBalance('points', totalVoucherPrice);
-      }
-      
-      // Add hashrate order
-      addHashrateOrder({
-        type: selectedVoucherType,
-        tier: voucherBasePrice,
-        count: voucherCount,
-        status: 'active',
-        currentDay: 1,
-        totalDays: selectedVoucherType === 'linear' ? 100 : 150,
-        totalHashrate: Math.floor(totalVoucherPrice * 1.5),
-        releasedHashrate: 0
-      });
+    verifyPayment(totalVoucherPrice, () => {
+      setIsProcessing(true);
+      setTimeout(() => {
+        setIsProcessing(false);
+        
+        // Update assets
+        updateBalance('scny', -totalVoucherPrice);
+        updateBalance('cValue', Math.floor(totalVoucherPrice * 1.5));
+        if (selectedVoucherType === '100percent') {
+          updateBalance('points', totalVoucherPrice);
+        }
+        
+        // Add hashrate order
+        addHashrateOrder({
+          type: selectedVoucherType,
+          tier: voucherBasePrice,
+          count: voucherCount,
+          status: 'active',
+          currentDay: 1,
+          totalDays: selectedVoucherType === 'linear' ? 100 : 150,
+          totalHashrate: Math.floor(totalVoucherPrice * 1.5),
+          releasedHashrate: 0
+        });
 
-      setActiveModal('success');
-      setVoucherCount(1);
-    }, 1000);
+        setActiveModal('success');
+        setVoucherCount(1);
+      }, 1000);
+    });
   };
 
   return (
@@ -298,6 +303,7 @@ export default function Vouchers() {
           </div>
         )}
       </AnimatePresence>
+      <PaymentModal />
     </div>
   );
 }

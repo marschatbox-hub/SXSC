@@ -5,6 +5,7 @@ import {
   History, Wallet, Gift, Cpu, Coins, Network, RefreshCw, Award, HelpCircle
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { usePaymentVerification } from "@/hooks/usePaymentVerification";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
 import { useAsset } from "@/contexts/AssetContext";
@@ -22,6 +23,8 @@ export default function Wealth() {
   const [selectedNode, setSelectedNode] = useState<number | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentNodeLevel, setCurrentNodeLevel] = useState(0); // 0: None, 1: V1, 2: V2, 3: V3, 4: V4
+  
+  const { verifyPayment, PaymentModal } = usePaymentVerification();
 
   const NODE_LEVELS = [
     { id: 1, name: "县代", price: 5000, desc: "享受1%区域市场奖励" },
@@ -46,37 +49,58 @@ export default function Wealth() {
   const priceDifference = Math.max(0, targetPrice - currentPrice);
 
   const handleUpgrade = () => {
-    setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      setCurrentNodeLevel(selectedNode || 1);
-      setActiveModal(null);
-    }, 1500);
+    const targetLevel = NODE_LEVELS.find(n => n.id === selectedNode);
+    const currentLevel = NODE_LEVELS.find(n => n.id === currentNodeLevel);
+    const targetPrice = targetLevel ? targetLevel.price : 0;
+    const currentPrice = currentLevel ? currentLevel.price : 0;
+    const priceDifference = targetPrice - currentPrice;
+
+    if (priceDifference <= 0) return;
+
+    verifyPayment(priceDifference, () => {
+      setIsProcessing(true);
+      setTimeout(() => {
+        setIsProcessing(false);
+        setCurrentNodeLevel(selectedNode || 1);
+        setActiveModal(null);
+      }, 1500);
+    });
   };
 
   const handleActionSubmit = () => {
-    setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      
-      if (activeModal === 'mint_sxt' && mintAmount && !isNaN(Number(mintAmount))) {
-        const amount = Number(mintAmount);
-        if (amount > 0 && amount <= xscnyBalance) {
-          updateBalance('xscny', -amount);
-          updateBalance('sxt', amount / 2);
-          setMintAmount('');
+    let amountToVerify = 0;
+    if (activeModal === 'mint_sxt' && mintAmount && !isNaN(Number(mintAmount))) {
+      amountToVerify = Number(mintAmount);
+    } else if (activeModal === 'transfer' && transferAmount && !isNaN(Number(transferAmount))) {
+      amountToVerify = Number(transferAmount);
+    }
+
+    if (amountToVerify <= 0) return;
+
+    verifyPayment(amountToVerify, () => {
+      setIsProcessing(true);
+      setTimeout(() => {
+        setIsProcessing(false);
+        
+        if (activeModal === 'mint_sxt' && mintAmount && !isNaN(Number(mintAmount))) {
+          const amount = Number(mintAmount);
+          if (amount > 0 && amount <= xscnyBalance) {
+            updateBalance('xscny', -amount);
+            updateBalance('sxt', amount / 2);
+            setMintAmount('');
+          }
+        } else if (activeModal === 'transfer' && transferAmount && !isNaN(Number(transferAmount))) {
+          const amount = Number(transferAmount);
+          const balance = transferAsset === 'SCNY' ? scnyBalance : sxtBalance;
+          if (amount > 0 && amount <= balance) {
+            updateBalance(transferAsset === 'SCNY' ? 'scny' : 'sxt', -amount);
+            setTransferAmount('');
+          }
         }
-      } else if (activeModal === 'transfer' && transferAmount && !isNaN(Number(transferAmount))) {
-        const amount = Number(transferAmount);
-        const balance = transferAsset === 'SCNY' ? scnyBalance : sxtBalance;
-        if (amount > 0 && amount <= balance) {
-          updateBalance(transferAsset === 'SCNY' ? 'scny' : 'sxt', -amount);
-          setTransferAmount('');
-        }
-      }
-      
-      setActiveModal(null);
-    }, 1000);
+        
+        setActiveModal(null);
+      }, 1000);
+    });
   };
 
   const TABS = [
@@ -697,6 +721,7 @@ export default function Wealth() {
           </div>
         )}
       </AnimatePresence>
+      <PaymentModal />
     </div>
   );
 }

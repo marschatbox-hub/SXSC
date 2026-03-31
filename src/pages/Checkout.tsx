@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { ChevronLeft, MapPin, ChevronRight, CheckCircle2, ArrowRight } from "lucide-react";
 import { useAsset } from "@/contexts/AssetContext";
 import { useCart } from "@/contexts/CartContext";
+import { usePaymentVerification } from "@/hooks/usePaymentVerification";
 import { cn } from "@/lib/utils";
 
 export default function Checkout() {
@@ -31,6 +32,8 @@ export default function Checkout() {
   const [pointsRatio, setPointsRatio] = useState(100); // 100% points by default
   const [isProcessing, setIsProcessing] = useState(false);
   const [step, setStep] = useState<"checkout" | "success">("checkout");
+  
+  const { verifyPayment, PaymentModal } = usePaymentVerification();
 
   const scnyAmount = (totalPrice * (100 - pointsRatio)) / 100;
   const pointsAmount = (totalPrice * pointsRatio) / 100;
@@ -38,39 +41,41 @@ export default function Checkout() {
   const handlePay = () => {
     if (scnyBalance < scnyAmount || pointsBalance < pointsAmount) return;
     
-    setIsProcessing(true);
-    setTimeout(() => {
-      updateBalance('scny', -scnyAmount);
-      updateBalance('points', -pointsAmount);
-      
-      // Add each item as an order
-      items.forEach((item: any) => {
-        addOrder({
-          status: "待发货",
-          shop: "随喜自营旗舰店",
-          product: {
-            id: item.id,
-            name: item.name,
-            image: item.image,
-            price: item.price,
-            scny: item.price / 2, // Assuming 50% max points
-            qty: item.quantity
-          },
-          total: item.price * item.quantity,
-          paidScny: (item.price * item.quantity * (100 - pointsRatio)) / 100,
-          paidPoints: (item.price * item.quantity * pointsRatio) / 100
+    verifyPayment(scnyAmount, () => {
+      setIsProcessing(true);
+      setTimeout(() => {
+        updateBalance('scny', -scnyAmount);
+        updateBalance('points', -pointsAmount);
+        
+        // Add each item as an order
+        items.forEach((item: any) => {
+          addOrder({
+            status: "待发货",
+            shop: "随喜自营旗舰店",
+            product: {
+              id: item.id,
+              name: item.name,
+              image: item.image,
+              price: item.price,
+              scny: item.price / 2, // Assuming 50% max points
+              qty: item.quantity
+            },
+            total: item.price * item.quantity,
+            paidScny: (item.price * item.quantity * (100 - pointsRatio)) / 100,
+            paidPoints: (item.price * item.quantity * pointsRatio) / 100
+          });
         });
-      });
 
-      // Remove items from cart
-      const cartItemIds = items.map((item: any) => item.cartItemId).filter(Boolean);
-      if (cartItemIds.length > 0) {
-        removeItems(cartItemIds);
-      }
+        // Remove items from cart
+        const cartItemIds = items.map((item: any) => item.cartItemId).filter(Boolean);
+        if (cartItemIds.length > 0) {
+          removeItems(cartItemIds);
+        }
 
-      setIsProcessing(false);
-      setStep("success");
-    }, 1500);
+        setIsProcessing(false);
+        setStep("success");
+      }, 1500);
+    });
   };
 
   if (step === "success") {
@@ -236,6 +241,7 @@ export default function Checkout() {
           )}
         </button>
       </div>
+      <PaymentModal />
     </div>
   );
 }

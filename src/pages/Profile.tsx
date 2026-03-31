@@ -17,10 +17,12 @@ import {
 } from "lucide-react";
 
 import { useAsset } from "@/contexts/AssetContext";
+import { useUser } from "@/contexts/UserContext";
 
 export default function Profile() {
   const navigate = useNavigate();
   const { isMerchant, orders, scnyBalance, pointsBalance, cValue } = useAsset();
+  const { profile } = useUser();
 
   const pendingCount = orders.filter(o => o.status === "待付款").length;
   const shippingCount = orders.filter(o => o.status === "待发货").length;
@@ -38,14 +40,14 @@ export default function Profile() {
         <div className="flex items-center gap-4 mt-4">
           <div className="w-16 h-16 rounded-full bg-white/5 border-2 border-cyan/50 p-1 overflow-hidden shadow-cyan">
             <img 
-              src="https://picsum.photos/seed/avatar/100/100" 
+              src={profile.avatarUrl} 
               alt="User Avatar" 
               className="w-full h-full rounded-full object-cover"
               referrerPolicy="no-referrer"
             />
           </div>
           <div className="text-gray-900">
-            <h1 className="text-xl font-bold mb-1 tracking-wide">Web3 Explorer</h1>
+            <h1 className="text-xl font-bold mb-1 tracking-wide">{profile.nickname}</h1>
             <div className="flex items-center gap-2 mt-1">
               <div className="flex items-center gap-2 text-xs bg-black/40 px-2.5 py-1 rounded-full w-fit backdrop-blur-md border border-white/10 font-mono">
                 <span className="w-2 h-2 rounded-full bg-neon shadow-neon"></span>

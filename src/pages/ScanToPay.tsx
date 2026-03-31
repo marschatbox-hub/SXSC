@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { QrCode, ArrowRight, CheckCircle2, AlertCircle, ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { usePaymentVerification } from "@/hooks/usePaymentVerification";
 import { cn } from "@/lib/utils";
 
 export default function ScanToPay() {
@@ -11,6 +12,8 @@ export default function ScanToPay() {
   const [pointsRatio, setPointsRatio] = useState(100); // 100 or 50%
   const [merchantQuota, setMerchantQuota] = useState(10000);
   const [isProcessing, setIsProcessing] = useState(false);
+  
+  const { verifyPayment, PaymentModal } = usePaymentVerification();
 
   const scnyAmount = (amount * (100 - pointsRatio)) / 100;
   const pointsAmount = (amount * pointsRatio) / 100;
@@ -25,11 +28,14 @@ export default function ScanToPay() {
 
   const handlePay = async () => {
     if (!isQuotaSufficient) return;
-    setIsProcessing(true);
-    // Simulate smart contract tx
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsProcessing(false);
-    setStep("success");
+    
+    verifyPayment(scnyAmount, async () => {
+      setIsProcessing(true);
+      // Simulate smart contract tx
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setIsProcessing(false);
+      setStep("success");
+    });
   };
 
   return (
@@ -217,6 +223,7 @@ export default function ScanToPay() {
           </motion.div>
         )}
       </div>
+      <PaymentModal />
     </motion.div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { PRODUCTS } from '@/pages/Home';
 
 type Product = typeof PRODUCTS[0];
@@ -35,7 +35,7 @@ export function UserActivityProvider({ children }: { children: React.ReactNode }
     localStorage.setItem('web3_history', JSON.stringify(history));
   }, [history]);
 
-  const toggleFavorite = (product: Product) => {
+  const toggleFavorite = useCallback((product: Product) => {
     setFavorites(prev => {
       const exists = prev.some(p => p.id === product.id);
       if (exists) {
@@ -44,22 +44,22 @@ export function UserActivityProvider({ children }: { children: React.ReactNode }
         return [...prev, product];
       }
     });
-  };
+  }, []);
 
-  const isFavorite = (productId: number) => {
+  const isFavorite = useCallback((productId: number) => {
     return favorites.some(p => p.id === productId);
-  };
+  }, [favorites]);
 
-  const addToHistory = (product: Product) => {
+  const addToHistory = useCallback((product: Product) => {
     setHistory(prev => {
       const filtered = prev.filter(p => p.id !== product.id);
       return [product, ...filtered].slice(0, 50); // Keep last 50
     });
-  };
+  }, []);
 
-  const clearHistory = () => {
+  const clearHistory = useCallback(() => {
     setHistory([]);
-  };
+  }, []);
 
   return (
     <UserActivityContext.Provider value={{ favorites, history, toggleFavorite, isFavorite, addToHistory, clearHistory }}>
